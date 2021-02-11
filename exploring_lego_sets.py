@@ -77,11 +77,11 @@ Out[32]: Index(['inventory_id', 'part_num', 'color_id', 'quantity', 'is_spare'],
 colors.head()
 
 colors.columns
-colors.size # 540 rows
-unique_names = colors.name.unique()
+len(colors) # 135 rows
+unique_names = colors.name.unique() # type: np.ndarray
 unique_names.size # 135 color names
 
-unique_rgb = colors.rgb.unique()
+unique_rgb = colors.rgb.unique() # type: np.ndarray
 unique_rgb.size # 124 rgb codes
 
 trans = colors[colors['is_trans'] == 't'] # sub_df with only trans parts
@@ -102,12 +102,53 @@ x = colors[colors['name'].str.contains('Glitter')]
 x['is_trans'].values.sum() # 'ttttt' >>> only transparent parts have glitter
 
 
-# extract each color and plot histogram
-'Blue', 'Green', 'Red', 'Yellow', 'Orange', 'Purple', 'Pink', 'White', 'Black', 'Brown', 'Clear', 'Gray', 'Gold', 'Silver', 'Copper', 'Violet', 
+##### extract each color and plot histogram
+
+# create a dictionary with common colors
+color_names = ['Blue', 'Green', 'Red', 'Yellow', 'Orange', 'Purple', 'Pink', 'White', 'Black', 'Brown', 'Clear', 'Gray', 'Gold', 'Silver', 'Copper', 'Violet'] 
+colors_dict = {}
+colors_totals = {}
+
+for color in color_names:
+    df = colors[colors['name'].str.contains(color)]
+    colors_dict[color] = df
+    colors_totals[color] = len(df)
+
+len(unique_rgb) # 124
+len(unique_names) # 135
+sum(colors_totals.values()) # 118
+# 17 colors missing
+
+# find all unusual colors
+colors["unusual_colors"] = colors['name'].apply(lambda x: 0 if any(i in x for i in color_names) else 1)
+
+unusual_colors = colors[colors['unusual_colors'] == 1]
+len(unusual_colors) # 26
+  
+
+unique_rgb = colors.rgb.unique() # type: np.ndarray
+unique_rgb.size # 124 rgb codes
+
+colors_rgb = colors['rgb'] # pd.Series
+len(colors_rgb) # 135
+# find all rgb values that are duplicated, keep all values:
+dup_bool = colors_rgb.duplicated(keep=False)
+rgb_dups = colors['rgb'][dup_bool.values]
+
+len(rgb_dups) # 20
+
+dup_names = colors['name'][dup_bool]
+
+dup_colors = dup_names.to_frame().join(rgb_dups)
+sorted_dups = dup_colors.sort_values(by=['rgb'])
+
 
 # how many "Glow"?
 glow = colors[colors['name'].str.contains('Glow')]
 len(glow) # 3 only 3 parts are Glow in the Dark
+
+
+
 # how many themes? 
 
 
