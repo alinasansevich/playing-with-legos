@@ -34,44 +34,13 @@ inventories = pd.read_csv('inventories.csv')
 inv_parts = pd.read_csv('inventory_parts.csv')
 inv_sets = pd.read_csv('inventory_sets.csv')
 
-
-
-# start analyzing minifigs
-minifigs['Harry Potter' in minifigs['name']] # KeyError: False
-
-minifigs.loc['name' == 'Will.i.am'] # ???
-
-minifigs['name'] == 'Will.i.am'
-
-sets.columns
-sets.columns
-Out[51]: Index(['set_num', 'name', 'year', 'theme_id', 'num_parts'], dtype='object')
-
-minifigs.columns
-Out[52]: Index(['fig_num', 'name', 'num_parts'], dtype='object')
-
-# if there is no relation between files, getting all the minifigures
-# from each file will be difficult  >> regex?
-
-serie = parts['part_material'] != 'Plastic'
-parts[serie]
-
-
-inventories.columns
-Out[30]: Index(['id', 'version', 'set_num'], dtype='object')
-
-inv_sets.columns
-Out[31]: Index(['inventory_id', 'set_num', 'quantity'], dtype='object')
-
-inv_parts.columns
-Out[32]: Index(['inventory_id', 'part_num', 'color_id', 'quantity', 'is_spare'], dtype='object')
-
-
-
 ######
 # how many different lego bricks
 ## which one is the most frequent? which one is the least frequent? in which set?
 
+##############################################
+# COLORS
+##############################################
 # how many different colors
 ## which one is the most frequent? which one is the least frequent? in which set?
 colors.head()
@@ -147,25 +116,51 @@ sorted_dups = dup_colors.sort_values(by=['rgb'])
 glow = colors[colors['name'].str.contains('Glow')]
 len(glow) # 3 only 3 parts are Glow in the Dark
 
-
-
+##############################################
+# THEMES
+##############################################
+themes.head()
+len(themes) # 598 rows
 # how many themes? 
+unique_themes = themes['name'].unique()
+len(unique_themes) # 424
+unique_theme_id = themes['id'].unique()
+len(unique_theme_id) # 598 == rows! some names are repeated?
+
+dups = themes['name'].duplicated(keep=False)
+themes_dups = themes['name'][dups.values] # 249
+
+themes_dups = themes_dups.sort_values()
 
 
+hp = themes[themes['name'].str.contains('Harry')]
+len(hp) # 4, one has a NaN parent_id
+
+######### CONTINUE HERE UNTIL I GET ALL THE UNIQUE THEMES ID + NAMES
+
+
+# set + themes >>> puedo ver a que theme pertenece cada set
+sets.head()
+
+
+##############################################
+# MINIFIGURES
+##############################################
 # how many Harry, Hermione and Ron?
 
 # distribution
 # frequency
 # correlation?
 
+
+
+
 #### what variables do I have?
 
 
 
 
-# set + themes >>> puedo ver a que theme pertenece cada set
 
-# is transp, numero de piezas de cada color, numero de colores
 
 #inventory_parts une varios archivos
 
