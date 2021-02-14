@@ -178,19 +178,84 @@ malfoy = minifigs[minifigs['name'].str.contains('Malfoy')] # 19
 ##############################################
 # SETS
 ##############################################
-sets.describe(include='all')
-
+len(sets) # 15903
 
 
 ##############################################
 # PARTS
 ##############################################
 # chech materials part_material
+len(parts) # 37064
+
+parts['part_material'].unique().describe
+# Out[19]: 
+# array(['Cardboard/Paper', 'Plastic', 'Cloth', 'Rubber', 'Metal'],
+#       dtype=object)
+
+parts['part_material'].value_counts()
+# Out[30]: 
+# Plastic            35496
+# Cardboard/Paper      850
+# Cloth                562
+# Rubber               144
+# Metal                 12
+# Name: part_material, dtype: int64
+
+##### I'm trying to go from parts to themes
+cloth_parts = parts[parts['part_material'] == 'Cloth']
+cloth_parts.name
+##### I will follow a cloth part:
+cloth_parts.loc[946, 'part_material']
+# 'Cloth'
+##### it's a shower curtain 
+cloth_parts.loc[946, 'name']
+# Duplo Cloth Shower Curtain
+
+##### part_num: '11835'
+cloth_parts.loc[946, 'part_num']
+# '11835'
+
+##### I look for it in inv_parts:
+inv_parts.loc[inv_parts['part_num'] == '11835']
+#         inventory_id part_num  color_id  quantity is_spare
+# 449506         13186    11835        15         1        f
+##### now I have it's inventory_id: 13186
+##### I look for it in sets:
+inv_sets.loc[inv_sets['inventory_id'] == 13186] # IS NOT THERE!???
+##### IS NOT THERE!???
+
+##### I will try with a flag this time:
+cloth_parts.name
+# 37044   Flag 4 x 5 [Plain]
+cloth_parts.loc[37044, 'name']
+# 'Flag 4 x 5 [Plain]'
+cloth_parts.loc[37044, 'part_num']
+##### part_num: 'x95'
+##### I look for it in inv_parts:
+inv_parts.loc[inv_parts['part_num'] == 'x95'] # IS NOT THERE!???
+##### IS NOT THERE!???
+
+# OK, no more cloth parts...
+metal_parts = parts[parts['part_material'] == 'Metal']
+metal_parts.name
+##### I'm looking for a screwdriver this time:
+##### 6738  Screwdriver with Old LEGO Logo [Metal]
+metal_parts.loc[6738, 'name']
+# 'Screwdriver with Old LEGO Logo [Metal]'
+metal_parts.loc[6738, 'part_num']
+##### part_num: '299'
+##### I look for it in inv_parts:
+inv_parts.loc[inv_parts['part_num'] == '299']
+#         inventory_id part_num  color_id  quantity is_spare
+# 255479          7623      299      9999         1        t
+# 345903         10286      299      9999         1        t
+# 363239         10796      299      9999         1        t
+# 481681         14182      299      9999         1        t
+##### I look for it in inv_sets, for inventory_id: 7623:
+inv_sets.loc[inv_sets['inventory_id'] == 14182]  # IS NOT THERE!???
+##### IS NOT THERE!???
 
 
-material = parts['part_material']
-material.unique()
-material.groupby(by=None, level=None)
 
 
-#inventory_parts une varios archivos
+
