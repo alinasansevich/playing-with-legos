@@ -146,22 +146,51 @@ sets.head()
 ##############################################
 # MINIFIGURES
 ##############################################
+minifigs.columns
+minifigs.head()
+
+
 # how many Harry, Hermione and Ron?
+harry = minifigs[minifigs['name'].str.contains('Harry')] # 51
+hermione = minifigs[minifigs['name'].str.contains('Hermione')] # 21
+ron = minifigs[minifigs['name'].str.contains('Ron')] # 30
+
+dumbledore = minifigs[minifigs['name'].str.contains('Dumbledore')] # 8
+
+weasleys = minifigs[minifigs['name'].str.contains('Weasley')]
+arthur = minifigs[minifigs['name'].str.contains('Arthur')] # 2
+molly = minifigs[minifigs['name'].str.contains('Molly')] # 3
+george = minifigs[minifigs['name'].str.contains('George')] # 7
+fred = minifigs[minifigs['name'].str.contains('Fred')] # 8
+ginny = minifigs[minifigs['name'].str.contains('Ginny')] # 6
+
+voldemort = minifigs[minifigs['name'].str.contains('Voldemort')] # 8
+professor = minifigs[minifigs['name'].str.contains('Professor')] # 34, but not all are Harry Potter's
+malfoy = minifigs[minifigs['name'].str.contains('Malfoy')] # 19
+
+# who else? WHAT can I do with this?
+
 
 # distribution
 # frequency
 # correlation?
 
+##############################################
+# SETS
+##############################################
+sets.describe(include='all')
 
 
 
-#### what variables do I have?
+##############################################
+# PARTS
+##############################################
+# chech materials part_material
 
 
-
-
+material = parts['part_material']
+material.unique()
+material.groupby(by=None, level=None)
 
 
 #inventory_parts une varios archivos
-
-# parts >>> different materials
