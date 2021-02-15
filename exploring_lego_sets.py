@@ -255,6 +255,33 @@ inv_parts.loc[inv_parts['part_num'] == '299']
 inv_sets.loc[inv_sets['inventory_id'] == 14182]  # IS NOT THERE!???
 ##### IS NOT THERE!???
 
+bricks = parts[parts['name'].str.contains('Brick')] # 3383
+bricks.name
+##### I'll be following an elephant's head this time:
+# 'Duplo Animal Brick 2 x 2 Elephant Head'
+bricks.loc[25, 'name']
+# 'Duplo Animal Brick 2 x 2 Elephant Head'
+bricks.loc[25, 'part_num']
+##### part_num: '10000'
+##### I look for it in inv_parts:
+inv_parts.loc[inv_parts['part_num'] == '10000'] # IS NOT THERE!???
+
+##### OK, no more rarre parts, a regular brick now:
+reg_bricks = bricks[bricks['name'].str.contains('Brick 2 x 4 x 2')] # 159
+##### OK, I'll follow a squirrel this time:
+# 10006   'Duplo Brick 2 x 4 x 2 with Squirrel Print'
+reg_bricks.loc[10006, 'name']
+# 'Duplo Brick 2 x 4 x 2 with Squirrel Print'
+reg_bricks.loc[10006, 'part_num']
+##### part_num: '31111pr9976'
+##### I look for it in inv_parts:
+inv_parts.loc[inv_parts['part_num'] == '31111pr9976'] # IS NOT THERE!???
+
+##### OK, enough already, I'll learn to do JOINs this doesn't make much sense.
+
+
+
+
 
 
 
