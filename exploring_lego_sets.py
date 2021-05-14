@@ -26,8 +26,9 @@ import matplotlib.pyplot as plt
 # create the DataFrames with all the raw data
 sets = pd.read_csv('sets.csv')
 themes = pd.read_csv('themes.csv')
+
 parts = pd.read_csv('parts.csv')
-minifigs = pd.read_csv('minifigs.csv')
+part_categories = pd.read_csv('part_categories.csv')
 colors = pd.read_csv('colors.csv')
 
 inventories = pd.read_csv('inventories.csv')
