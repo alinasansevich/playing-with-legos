@@ -20,17 +20,15 @@ inspired by the code from the book "Bioinformatics Programming Using Python"
 
 import sqlite3
 import sys
-import csv
 
-
-file_names = ['sets.csv',
-              'themes.csv',
-              'parts.csv',
-              'part_categories.csv',
-              'colors.csv',
-              'inventories.csv',
-              'inventory_parts.csv',
-              'inventory_sets.csv']
+file_names = ['t_sets.csv',
+              't_themes.csv',
+              't_parts.csv',
+              't_part_categories.csv',
+              't_colors.csv',
+              't_inventories.csv',
+              't_inventory_parts.csv',
+              't_inventory_sets.csv']
 
 table_names = ['Sets',
                'Themes', 
@@ -55,7 +53,7 @@ def read_headers(file_names, table_names):
         with open(file) as f:
             header = f.readline()
             header = header[:-1] # drop '\n'
-            num_columns = len(header.split(','))
+            num_columns = len(header.split('\t'))
             
             values = '?, ' * num_columns
             values = values[:-2]
@@ -75,7 +73,7 @@ def read_csv_n_load_data(csv_file, query):
         header = f.readline() # read header just to skip it
         for line in f:
             row = line[:-1]
-            row = tuple(row.split(','))
+            row = tuple(row.split('\t'))
             values = tuple([row[i] for i in range(len(row))])            
             cur.execute(query, values)
 
@@ -91,6 +89,8 @@ def load_data(file_names, queries):
         print(ex, file=sys.stderr)
         raise
 
+
+### program starts here
 conn = sqlite3.connect('lego_func_appr.db')
 cur = conn.cursor()
 
@@ -173,31 +173,55 @@ queries = read_headers(file_names, table_names)
 # load data into db
 load_data(file_names, queries)
 
-        
-    
-# I'm here:
-    # try using pd.read_csv + pd.to_csv(sep='Tab')
+
+
+##### Other comments #####
+
+# ### The .csv files had commas within strings, so I got lots of errors
+# ### when loading data to the database.
+# ### To fix this, I changed the .csv files to be tab delimited using pandas
+# ### and the functions to split at '\t'
+
+# import pandas as pd
+
+# sets = pd.read_csv('sets.csv')
+# sets.to_csv('t_sets.csv', sep='\t', index=False)
+
+# themes = pd.read_csv('themes.csv')
+# themes.to_csv('t_themes.csv', sep='\t', index=False)
+
+# parts = pd.read_csv('parts.csv')
+# parts.to_csv('t_parts.csv', sep='\t', index=False)
+
+# part_categories = pd.read_csv('part_categories.csv')
+# part_categories.to_csv('t_part_categories.csv', sep='\t', index=False)
+
+# colors = pd.read_csv('colors.csv')
+# colors.to_csv('t_colors.csv', sep='\t', index=False)
+
+# inventories = pd.read_csv('inventories.csv')
+# inventories.to_csv('t_inventories.csv', sep='\t', index=False)
+
+# inv_parts = pd.read_csv('inventory_parts.csv')
+# inv_parts.to_csv('t_inventory_parts.csv', sep='\t', index=False)
+
+# inv_sets = pd.read_csv('inventory_sets.csv')
+# inv_sets.to_csv('t_inventory_sets.csv', sep='\t', index=False)
 
 
 
+# # uncomment to check how it works:
+# for table in table_names:
+#     cur.execute("SELECT * FROM {} LIMIT 10".format(table))
+#     result = cur.fetchall()
+#     for tup in result:
+#         print(tup)
+#     print('\n\n')
 
 
-
-# query = 'INSERT INTO Sets VALUES (?, ?, ?, ?, ?)'
-
-# with open('themes.csv') as f:
-#     header = f.readline() # read header just to skip it
-#     for line in f:
-#         row = line[:-1]
-#         row = tuple(row.split(','))
-#         values = [row[i] for i in range(len(row))]          
-#         cur.execute(query, values)
-
-
-
-
-
-
+### WIP:
+    # include DROP TABLE IF EXISTS before CREATE statements
+    # it didn't work >>> WHY???
 
                        # DROP TABLE IF EXISTS Sets
                        # DROP TABLE IF EXISTS Themes
@@ -207,5 +231,3 @@ load_data(file_names, queries)
                        # DROP TABLE IF EXISTS Inventories
                        # DROP TABLE IF EXISTS Inventory_Parts
                        # DROP TABLE IF EXISTS Inventory_Sets
-
-
